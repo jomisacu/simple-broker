@@ -13,6 +13,7 @@ use Enqueue\SnsQs\SnsQsContext;
 use Interop\Queue\Message;
 use Jomisacu\SimpleBroker\Contracts\MessageBroker;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -108,7 +109,7 @@ class MessageBrokerQueueSnsqs implements MessageBroker
     private function buildSerializer(): SerializerInterface
     {
         $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
+        $normalizers = [new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter())];
 
         return new Serializer($normalizers, $encoders);
     }
