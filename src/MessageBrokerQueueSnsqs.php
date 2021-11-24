@@ -10,7 +10,9 @@ declare(strict_types=1);
 namespace Jomisacu\SimpleBroker;
 
 use Enqueue\SnsQs\SnsQsContext;
+use Enqueue\SnsQs\SnsQsTopic;
 use Interop\Queue\Message;
+use Interop\Queue\Topic;
 use Jomisacu\SimpleBroker\Contracts\MessageBroker;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
@@ -21,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class MessageBrokerQueueSnsqs implements MessageBroker
 {
     /**
-     * @var \Enqueue\SnsQs\SnsQsTopic|\Interop\Queue\Topic
+     * @var SnsQsTopic|Topic
      */
     protected $topic;
     protected $topicName;
@@ -106,7 +108,7 @@ class MessageBrokerQueueSnsqs implements MessageBroker
         $targetClass = $message->getProperty('fqcn');
 
         if (!class_exists($targetClass)) {
-            throw new TargetClassNotFoundException(sprintf('Can not deserialize object. The class %s not found.', $targetClass));
+            throw new TargetClassNotFoundException(sprintf('Can not deserialize object. The class %s not exists.', $targetClass));
         }
 
         return $this->serializer->deserialize($message->getBody(),
