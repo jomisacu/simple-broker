@@ -12,6 +12,8 @@ namespace Jomisacu\SimpleBroker;
 use Enqueue\SnsQs\SnsQsContext;
 use Interop\Queue\Message;
 use Jomisacu\SimpleBroker\Contracts\MessageBroker;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageBrokerQueueSnsqs implements MessageBroker
@@ -30,11 +32,11 @@ class MessageBrokerQueueSnsqs implements MessageBroker
      */
     private $serializer;
 
-    public function __construct(SnsQsContext $context, string $topicName, SerializerInterface $serializer)
+    public function __construct(SnsQsContext $context, string $topicName)
     {
         $this->context = $context;
         $this->topicName = $topicName;
-        $this->serializer = $serializer;
+        $this->serializer = $this->buildSerializer();
     }
 
     public function createTopic(string $topicName): void
@@ -100,5 +102,12 @@ class MessageBrokerQueueSnsqs implements MessageBroker
     private function deserialize(Message $message)
     {
         return $this->serializer->deserialize($message->getBody(), $message->getProperty('fqcn'), 'json');
+    }
+
+    private function buildSerializer(): SerializerInterface
+    {
+        $encoders = [new JsonEncoder()];
+
+        return new Serializer([], $encoders);
     }
 }
