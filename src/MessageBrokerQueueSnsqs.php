@@ -103,7 +103,14 @@ class MessageBrokerQueueSnsqs implements MessageBroker
 
     private function deserialize(Message $message)
     {
-        return $this->serializer->deserialize($message->getBody(), $message->getProperty('fqcn'), 'json');
+        $targetClass = $message->getProperty('fqcn');
+
+        if (!class_exists($targetClass)) {
+            throw new TargetClassNotFoundException(sprintf('Can not deserialize object. The class %s not found.', $targetClass));
+        }
+
+        return $this->serializer->deserialize($message->getBody(),
+            $targetClass, 'json');
     }
 
     private function buildSerializer(): SerializerInterface
