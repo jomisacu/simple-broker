@@ -49,7 +49,7 @@ class ConsumeMessagesCommand extends Command
         $endTime = $startTime + ($input->getOption('timeout') ?: 10 * 60);
 
         while (true) {
-            $this->messageBroker->consume($input->getOption('queue'), function ($originalEvent) {
+            $this->messageBroker->consume($input->getArgument('queue'), function ($originalEvent) {
                 $this->dispatcher->dispatch($originalEvent);
             }, 0);
 
