@@ -107,12 +107,19 @@ class MessageBrokerQueueSnsqs implements MessageBroker
     {
         $targetClass = $message->getProperty('fqcn');
 
-        if (!class_exists($targetClass)) {
+        if ($targetClass && !class_exists($targetClass)) {
             throw new TargetClassNotFoundException(sprintf('Can not deserialize object. The class %s not exists.', $targetClass));
         }
 
-        return $this->serializer->deserialize($message->getBody(),
-            $targetClass, 'json');
+        if ($targetClass) {
+            return $this->serializer->deserialize($message->getBody(), $targetClass, 'json');
+        }
+
+        if (null == ($decoded = json_decode($message->getBody()))) {
+            throw new NotDeserializableMessageBodyException('The message can not be deserialized by the simple broker. Probably was sent by the aws console as plain text');
+        }
+
+        return $decoded;
     }
 
     private function buildSerializer(): SerializerInterface

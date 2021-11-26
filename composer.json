@@ -1,24 +1,25 @@
 {
-    "name": "jomisacu/simple-broker",
-    "description": "A simple interface to send and consume messages",
-    "type": "library",
-    "require": {
-        "php": "^7.3",
-        "enqueue/snsqs": "^0.10.13",
-        "symfony/serializer": "^5.3",
-        "symfony/property-access": "^5.3",
-        "symfony/console": "^5.3"
-    },
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Jomisacu\\SimpleBroker\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "jomisacu",
-            "email": "jomisacu.software@gmail.com"
-        }
-    ]
+  "name": "jomisacu/simple-broker",
+  "description": "A simple interface to send and consume messages",
+  "type": "library",
+  "require": {
+    "php": "^7.3",
+    "enqueue/snsqs": "^0.10.13",
+    "symfony/serializer": "^5.3",
+    "symfony/property-access": "^5.3",
+    "symfony/console": "^5.3",
+    "ext-json": "*"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Jomisacu\\SimpleBroker\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "jomisacu",
+      "email": "jomisacu.software@gmail.com"
+    }
+  ]
 }
