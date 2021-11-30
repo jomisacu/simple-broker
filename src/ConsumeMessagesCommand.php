@@ -49,8 +49,12 @@ class ConsumeMessagesCommand extends Command
         $endTime = $startTime + ($input->getOption('timeout') ?: 10 * 60);
 
         while (true) {
-            $this->messageBroker->consume($input->getArgument('queue'), function ($originalEvent) {
+            $this->messageBroker->consume($input->getArgument('queue'), function ($originalEvent) use ($input, $output) {
+                $eventClass = get_class($originalEvent);
+                $output->writeln(sprintf('Consuming event %s from the queue %s', $eventClass, $input->getArgument('queue')));
+                $output->writeln(sprintf('handle the event %s...', $eventClass));
                 $this->dispatcher->dispatch($originalEvent);
+                $output->writeln(sprintf('Event %s the handled!', $eventClass));
             }, 0);
 
             if (time() >= $endTime) {
