@@ -55,6 +55,7 @@ class ConsumeMessagesCommand extends Command
                 $output->writeln(sprintf('handle the event %s...', $eventClass));
                 $this->dispatcher->dispatch($originalEvent);
                 $output->writeln(sprintf('Event %s the handled!', $eventClass));
+                $output->writeln('------------------------------------------------------');
             }, 0);
 
             if (time() >= $endTime) {
