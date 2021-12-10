@@ -59,6 +59,7 @@ class ConsumeMessagesCommand extends Command
                     $output->writeln(sprintf('Event %s the handled!', $eventClass));
                     $output->writeln('------------------------------------------------------');
                 } catch (Exception $exception) {
+                    $output->writeln('Exception: '.get_class($exception));
                     $output->writeln('Error: '.$exception->getMessage());
                     $output->writeln('File: '.$exception->getFile());
                     $output->writeln('line: '.$exception->getLine());
