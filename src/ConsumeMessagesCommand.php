@@ -56,7 +56,7 @@ class ConsumeMessagesCommand extends Command
                     $output->writeln(sprintf('Consuming event %s from the queue %s', $eventClass, $input->getArgument('queue')));
                     $output->writeln(sprintf('handle the event %s...', $eventClass));
                     $this->dispatcher->dispatch($originalEvent);
-                    $output->writeln(sprintf('Event %s the handled!', $eventClass));
+                    $output->writeln(sprintf('Event %s handled!', $eventClass));
                     $output->writeln('------------------------------------------------------');
                 } catch (Exception $exception) {
                     $output->writeln('Exception: '.get_class($exception));
