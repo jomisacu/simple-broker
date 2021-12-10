@@ -42,6 +42,7 @@ class ConsumeMessagesCommand extends Command
         $this->setName('simple-broker:consume-messages');
         $this->addArgument('queue', InputArgument::REQUIRED, 'The queue from the messages comes');
         $this->addOption('timeout', '', InputOption::VALUE_REQUIRED, 'The timeout for this execution');
+        $this->setErrorHandler();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -76,5 +77,12 @@ class ConsumeMessagesCommand extends Command
                 return 0;
             }
         }
+    }
+
+    private function setErrorHandler()
+    {
+        set_error_handler(function ($severity, $message, $file, $line) {
+            throw new RuntimeException($message, $severity, null, $file, $line);
+        });
     }
 }
