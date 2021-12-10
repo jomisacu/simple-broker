@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Jomisacu\SimpleBroker;
 
+use Exception;
 use Jomisacu\SimpleBroker\Contracts\Dispatcher;
 use Jomisacu\SimpleBroker\Contracts\MessageBroker;
 use Symfony\Component\Console\Command\Command;
@@ -50,12 +51,24 @@ class ConsumeMessagesCommand extends Command
 
         while (true) {
             $this->messageBroker->consume($input->getArgument('queue'), function ($originalEvent) use ($input, $output) {
-                $eventClass = get_class($originalEvent);
-                $output->writeln(sprintf('Consuming event %s from the queue %s', $eventClass, $input->getArgument('queue')));
-                $output->writeln(sprintf('handle the event %s...', $eventClass));
-                $this->dispatcher->dispatch($originalEvent);
-                $output->writeln(sprintf('Event %s the handled!', $eventClass));
-                $output->writeln('------------------------------------------------------');
+                try {
+                    $eventClass = get_class($originalEvent);
+                    $output->writeln(sprintf('Consuming event %s from the queue %s', $eventClass, $input->getArgument('queue')));
+                    $output->writeln(sprintf('handle the event %s...', $eventClass));
+                    $this->dispatcher->dispatch($originalEvent);
+                    $output->writeln(sprintf('Event %s the handled!', $eventClass));
+                    $output->writeln('------------------------------------------------------');
+                } catch (Exception $exception) {
+                    $output->writeln('Error: '.$exception->getMessage());
+                    $output->writeln('File: '.$exception->getFile());
+                    $output->writeln('line: '.$exception->getLine());
+                    $output->writeln('trace: '.$exception->getTraceAsString());
+                    $output->writeln('------------------------------------------------------');
+                    $output->writeln('------------------------------------------------------');
+                    $output->writeln('------------------------------------------------------');
+                    $output->writeln('------------------------------------------------------');
+                    throw $exception;
+                }
             }, 0);
 
             if (time() >= $endTime) {
