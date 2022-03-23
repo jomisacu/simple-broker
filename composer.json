@@ -1,9 +1,9 @@
 {
-  "name": "jomisacu/simple-broker",
+  "name": "dasacav3/simple-broker",
   "description": "A simple interface to send and consume messages",
   "type": "library",
   "require": {
-    "php": "^7.3",
+    "php": ">=8.0",
     "enqueue/snsqs": "^0.10.13",
     "symfony/serializer": "^5.3",
     "symfony/property-access": "^5.3",
