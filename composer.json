@@ -1,5 +1,5 @@
 {
-  "name": "jomisacu/simple-broker",
+  "name": "dasacav3/simple-broker",
   "description": "A simple interface to send and consume messages",
   "type": "library",
   "require": {
