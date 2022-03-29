@@ -36,10 +36,10 @@ class MessageBrokerQueueSnsqs implements MessageBroker
      */
     private $serializer;
 
-    public function __construct(SnsQsContext $context, string $topicName)
+    public function __construct(SnsQsContext $context, $topicName)
     {
         $this->context = $context;
-        $this->topicName = $topicName;
+        $this->topicName = strval($topicName);
         $this->serializer = $this->buildSerializer();
     }
 
